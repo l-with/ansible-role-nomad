@@ -1,0 +1,26 @@
+name = "{{ nomad_node_name }}"
+
+data_dir = "{{ nomad_data_dir }}"
+
+bind_addr = "{{ nomad_bind_address }}"
+
+acl {
+  enabled = true
+  token_ttl = "{{ nomad_acl_token_ttl }}"
+  policy_ttl = "{{ nomad_acl_policy_ttl }}"
+  replication_token = "{{ nomad_acl_replication_token }}"
+}
+
+consul {
+  token = "{{ nomad_consul_acl_nomad_server_token }}"
+  server_auto_join = true
+  allow_unauthenticated = {{ nomad_consul_allow_unauthenticated | lower }}
+
+{% if nomad_consul_tls_enable | bool %}
+  ssl = true
+  address = "127.0.0.1:8501"
+  ca_file ="{{ nomad_consul_tls_dir }}/{{ nomad_consul_tls_ca_crt }}"
+  cert_file = "{{ nomad_consul_tls_dir }}/{{ nomad_consul_tls_server_crt }}"
+  key_file = "{{ nomad_consul_tls_dir }}/{{ nomad_consul_tls_server_key }}"
+{% endif %}
+}

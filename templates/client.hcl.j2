@@ -1,0 +1,27 @@
+client {
+  enabled = true
+}
+
+{% if nomad_tls_enable | bool %}
+tls {
+  http = true
+  rpc  = true
+
+  ca_file = "{{ nomad_tls_dir }}/{{ nomad_ca_file }}"
+  cert_file = "{{ nomad_tls_dir }}/{{ nomad_client_cert_file }}"
+  key_file = "{{ nomad_tls_dir }}/{{ nomad_client_key_file }}"
+
+  verify_server_hostname = true
+  verify_https_client    = true
+}
+{% endif %}
+
+{% if nomad_raw_exec_enable | bool %}
+plugin "raw_exec" {
+  config {
+    enabled = true
+  }
+}
+{% endif %}
+
+log_level = "DEBUG"
