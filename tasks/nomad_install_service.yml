@@ -1,0 +1,33 @@
+---
+
+- name: Ensure Hashicorp key
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: lsb_release -cs
+  ansible.builtin.command:
+    cmd: lsb_release -cs
+  register:     _nomad_lsb_release_cs_results
+  changed_when: false
+
+- name: Set fact _nomad_lsb_release_cs
+  ansible.builtin.set_fact:
+    _nomad_lsb_release_cs: "{{ _nomad_lsb_release_cs_results.stdout }}"
+
+- name: Ensure Hashicorp repository
+  ansible.builtin.apt_repository:
+    repo:         deb [arch=amd64] https://apt.releases.hashicorp.com {{ _nomad_lsb_release_cs }} main
+    update_cache: yes
+    state:        present
+
+- name: Ensure nomad package installed
+  ansible.builtin.apt:
+    name: "nomad{% if nomad_version != 'latest' %}={{ nomad_version }}{% endif %}"
+
+- name: Ensure hold nomad package version
+  ansible.builtin.dpkg_selections:
+    name:      nomad
+    selection: hold
+
+...

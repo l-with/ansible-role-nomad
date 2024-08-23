@@ -1,0 +1,14 @@
+---
+
+galaxy_info:
+  role_name: nomad
+  description: install nomad
+  author: l_with
+  license: Creative Commons Attribution-NonCommercial 4.0 International Public License
+  min_ansible_version: '2.9'
+  platforms:
+  - name: Ubuntu
+    versions:
+      - focal
+
+...

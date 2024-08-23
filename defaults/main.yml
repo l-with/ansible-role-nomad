@@ -1,0 +1,8 @@
+---
+
+# basic
+nomad_version:        latest
+nomad_install_method: 'service'
+nomad_install:        true
+
+...
