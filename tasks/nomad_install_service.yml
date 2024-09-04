@@ -1,29 +1,22 @@
 ---
 
 - name: Ensure Hashicorp key
-  ansible.builtin.apt_key:
-    url: https://apt.releases.hashicorp.com/gpg
-    state: present
-
-- name: lsb_release -cs
-  ansible.builtin.command:
-    cmd: lsb_release -cs
-  register:     _nomad_lsb_release_cs_results
-  changed_when: false
-
-- name: Set fact _nomad_lsb_release_cs
-  ansible.builtin.set_fact:
-    _nomad_lsb_release_cs: "{{ _nomad_lsb_release_cs_results.stdout }}"
+  ansible.builtin.shell:
+    cmd:     wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    creates: /usr/share/keyrings/hashicorp-archive-keyring.gpg
 
 - name: Ensure Hashicorp repository
-  ansible.builtin.apt_repository:
-    repo:         deb [arch=amd64] https://apt.releases.hashicorp.com {{ _nomad_lsb_release_cs }} main
-    update_cache: yes
-    state:        present
+  ansible.builtin.shell:
+    cmd:echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 
 - name: Ensure nomad package installed
   ansible.builtin.apt:
     name: "nomad{% if nomad_version != 'latest' %}={{ nomad_version }}{% endif %}"
+
+- name: Ensure nomad service enabled
+  ansible.builtin.systemd:
+    name:    consul
+    enabled: true
 
 - name: Ensure hold nomad package version
   ansible.builtin.dpkg_selections:

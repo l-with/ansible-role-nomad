@@ -1,0 +1,40 @@
+---
+
+- name: Ensure {{ nomad_config_path }}
+  ansible.builtin.file:
+    dest: "{{ nomad_config_path }}"
+    state: directory
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+
+- name: Ensure dict nomad_ports combined with defaults
+  ansible.builtin.set_fact:
+    nomad_ports: "{{ nomad_ports | combine(_nomad_ports_defaults) }}"
+
+- name: Ensure nomad base config
+  ansible.builtin.template:
+    src:   base.hcl.j2
+    dest:  "{{ nomad_config_path }}/base.hcl"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    mode:  u=rw,g=r
+
+- name: Ensure nomad client config
+  ansible.builtin.template:
+    src:   client.hcl.j2
+    dest:  "{{ nomad_config_path }}/client.hcl"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    mode:  u=rw,g=r
+  when: nomad_role == 'client'
+
+- name: Ensure nomad server config
+  ansible.builtin.template:
+    src:   server.hcl.j2
+    dest:  "{{ nomad_config_path }}/server.hcl"
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
+    mode:  u=rw,g=r
+  when: nomad_role == 'server'
+
+...

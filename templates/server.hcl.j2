@@ -1,0 +1,70 @@
+server {
+  enabled = true
+  bootstrap_expect = {{ nomad_server.bootstrap_expect }}
+{% if nomad_server.authoritative_region is defined %}
+  authoritative_region = "{{ nomad_server.authoritative_region }}"
+{% endif %}
+{% if nomad_server.data_dir is defined %}
+  data_dir = "{{ nomad_server.data_dir }}
+{% endif %}
+{% if nomad_server.enabled_schedulers is defined %}
+  enabled_schedulers = "{{ nomad_server.enabled_schedulers }}
+{% endif %}
+{% if nomad_server.enable_event_broker is defined %}
+  enable_event_broker = "{{ nomad_server.enable_event_broker }}
+{% endif %}
+  encrypt = "{{ nomad_server.encrypt }}"
+{% if nomad_server.num_schedulers is defined %}
+  num_schedulers = "{{ nomad_server.num_schedulers }}
+{% endif %}
+{% if nomad_server.license_path is defined %}
+  license_path = "{{ nomad_server.license_path }}
+{% endif %}
+{% if nomad_server.rejoin_after_leave is defined %}
+  rejoin_after_leave = "{{ nomad_server.rejoin_after_leave }}
+{% endif %}
+{% if nomad_server.server_join is defined %}
+  server_join {
+    retroy_join = ["{{ nomad_server.server_join.retry_join | join('", "') }}"]
+    # retry_interval
+    # retry_max
+    # start_join
+  }  
+{% endif %}
+  # node_gc_threshold (string: "24h") - Specifies how long a node must be in a terminal state before it is garbage collected and purged from the system. This is specified using a label suffix like "30s" or "1h".
+  # job_gc_interval (string: "5m") - Specifies the interval between the job garbage collections. Only jobs who have been terminal for at least job_gc_threshold will be collected. Lowering the interval will perform more frequent but smaller collections. Raising the interval will perform collections less frequently but collect more jobs at a time. Reducing this interval is useful if there is a large throughput of tasks, leading to a large set of dead jobs. This is specified using a label suffix like "30s" or "3m".
+  # job_gc_threshold (string: "4h") - Specifies the minimum time a job must be in the terminal state before it is eligible for garbage collection. This is specified using a label suffix like "30s" or "1h".
+  # eval_gc_threshold (string: "1h") - Specifies the minimum time an evaluation must be in the terminal state before it is eligible for garbage collection. This is specified using a label suffix like "30s" or "1h". Note that batch job evaluations are controlled via batch_eval_gc_threshold.
+  # batch_eval_gc_threshold (string: "24h") - Specifies the minimum time an evaluation stemming from a batch job must be in the terminal state before it is eligible for garbage collection. This is specified using a label suffix like "30s" or "1h". Note that the threshold is a necessary but insufficient condition for collection, and the most recent evaluation won't be garbage collected even if it breaches the threshold.
+  # deployment_gc_threshold (string: "1h") - Specifies the minimum time a deployment must be in the terminal state before it is eligible for garbage collection. This is specified using a label suffix like "30s" or "1h".
+  # csi_volume_claim_gc_interval (string: "5m") - Specifies the interval between CSI volume claim garbage collections.
+  # csi_volume_claim_gc_threshold (string: "1h") - Specifies the minimum age of a CSI volume before it is eligible to have its claims garbage collected. This is specified using a label suffix like "30s" or "1h".
+  # csi_plugin_gc_threshold (string: "1h") - Specifies the minimum age of a CSI plugin before it is eligible for garbage collection if not in use. This is specified using a label suffix like "30s" or "1h".
+  # acl_token_gc_threshold (string: "1h") - Specifies the minimum age of an expired ACL token before it is eligible for garbage collection. This is specified using a label suffix like "30s" or "1h".
+  # default_scheduler_config (scheduler_configuration: nil) - Specifies the initial default scheduler config when bootstrapping cluster. The parameter is ignored once the cluster is bootstrapped or value is updated through the API endpoint. See the example section for more details
+  # heartbeat_grace (string: "10s") - Specifies the additional time given beyond the heartbeat TTL of Clients to account for network and processing delays and clock skew. This is specified using a label suffix like "30s" or "1h". See Client Heartbeats below for details.
+  # min_heartbeat_ttl (string: "10s") - Specifies the minimum time between Client heartbeats. This is used as a floor to prevent excessive updates. This is specified using a label suffix like "30s" or "1h". See Client Heartbeats below for details.
+  # failover_heartbeat_ttl (string: "5m") - The time by which all Clients must heartbeat after a Server leader election. This is specified using a label suffix like "30s" or "1h". See Client Heartbeats below for details.
+  # max_heartbeats_per_second (float: 50.0) - Specifies the maximum target rate of heartbeats being processed per second. This allows the TTL to be increased to meet the target rate. See Client Heartbeats below for details.
+  # non_voting_server (bool: false) - (Enterprise-only) Specifies whether this server will act as a non-voting member of the cluster to help provide read scalability.
+  # plan_rejection_tracker (PlanRejectionTracker) - Configuration for the plan rejection tracker that the Nomad leader uses to track the history of plan rejections.
+  # raft_boltdb - This is a nested object that allows configuring options for Raft's BoltDB based log store.
+  # no_freelist_sync - Setting this to true will disable syncing the BoltDB freelist to disk within the raft.db file. Not syncing the freelist to disk will reduce disk IO required for write operations at the expense of longer server startup times.
+  # raft_protocol (int: 3) - Specifies the Raft protocol version to use when communicating with other Nomad servers. This affects available Autopilot features and is typically not required as the agent internally knows the latest version, but may be useful in some upgrade scenarios. Must be 3 in Nomad v1.4 or later.
+  #raft_multiplier (int: 1) - An integer multiplier used by Nomad servers to scale key Raft timing parameters. Omitting this value or setting it to 0 uses default timing described below. Lower values are used to tighten timing and increase sensitivity while higher values relax timings and reduce sensitivity. Tuning this affects the time it takes Nomad to detect leader failures and to perform leader elections, at the expense of requiring more network and CPU resources for better performance. The maximum allowed value is 10.
+  # By default, Nomad will use the highest-performance timing, currently equivalent to setting this to a value of 1. Increasing the timings makes leader election less likely during periods of networking issues or resource starvation. Since leader elections pause Nomad's normal work, it may be beneficial for slow or unreliable networks to wait longer before electing a new leader. The trade-off when raising this value is that during network partitions or other events (server crash) where a leader is lost, Nomad will not elect a new leader for a longer period of time than the default. The nomad.nomad.leader.barrier and nomad.raft.leader.lastContact metrics are a good indicator of how often leader elections occur and Raft latency.
+  # raft_snapshot_threshold (int: "8192") - Specifies the minimum number of Raft logs to be written to disk before the node is allowed to take a snapshot. This reduces the frequency and impact of creating snapshots. During node startup, Raft restores the latest snapshot and then applies the individual logs to catch the node up to the last known state. This can be tuned during operation by a hot configuration reload.
+  # raft_snapshot_interval (string: "120s") - Specifies the minimum time between checks if Raft should perform a snapshot. The Raft library randomly staggers between this value and twice this value to avoid the entire cluster performing a snapshot at once. Nodes are eligible to snapshot once they have exceeded the raft_snapshot_threshold. This value can be tuned during operation by a hot configuration reload.
+  # raft_trailing_logs (int: "10240") - Specifies how many logs are retained after a snapshot. These logs are used so that Raft can quickly replay logs on a follower instead of being forced to send an entire snapshot. This value can be tuned during operation by a hot configuration reload.
+  # redundancy_zone (string: "") - (Enterprise-only) Specifies the redundancy zone that this server will be a part of for Autopilot management. For more information, see the Autopilot Guide.
+  # root_key_gc_interval (string: "10m") - Specifies the interval between encryption key metadata garbage collections.
+  # root_key_gc_threshold (string: "1h") - Specifies the minimum time after the root_key_rotation_threshold has passed that an encryption key must exist before it can be eligible for garbage collection.
+  # root_key_rotation_threshold (string: "720h") - Specifies the lifetime of an active encryption key before it is automatically rotated on the next garbage collection interval. Nomad will prepublish the replacement key at half the root_key_rotation_threshold time so external consumers of Workload Identity have time to obtain the new public key from the JWKS URL before it is used.
+  # upgrade_version (string: "") - A custom version of the format X.Y.Z to use in place of the Nomad version when custom upgrades are enabled in Autopilot. For more information, see the Autopilot Guide.
+  # search (search: nil) - Specifies configuration parameters for the Nomad search API.
+  # job_max_priority (int: 100) - Specifies the maximum priority that can be assigned to a job. A valid value must be between 100 and 32766.
+  # job_default_priority (int: 50) - Specifies the default priority assigned to a job. A valid value must be between 50 and job_max_priority.
+  # job_max_source_size (string: "1M") - Specifies the size limit of the associated job source content when registering a job. Note this is not a limit on the actual size of a job. If the limit is exceeded, the original source is simply discarded and no error is returned from the job API.
+  # job_tracked_versions (int: 6) - Specifies the number of historic job versions that are kept.
+  # oidc_issuer (string: "") - Specifies the Issuer URL for Workload Identity JWTs. For example, "https://nomad.example.com". If set the /.well-known/openid-configuration HTTP endpoint is enabled for third parties to discover Nomad's OIDC configuration. Once set oidc_issuer cannot be changed without invalidating Workload Identities that have the old issuer claim. For this reason it is suggested to set oidc_issuer to a proxy in front of Nomad's HTTP API to ensure a stable DNS name can be used instead of a potentially ephemeral Nomad server IP.
+}

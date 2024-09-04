@@ -1,8 +1,28 @@
 ---
 
-# basic
+## basic
 nomad_version:        latest
 nomad_install_method: 'service'
 nomad_install:        true
+nomad_configure:      true
+nomad_role:           client
+nomad_home_path:      /srv/nomad
+nomad_config_path:    "{% if nomad_install_method not in ['service', 'binary'] %}{{ nomad_home_path }}/config{% else %}/etc/nomad.d{% endif %}"
+nomad_user:           nomad
+nomad_group:          nomad
+
+## config
+nomad_name:       "{{ ansible_hostname }}"
+#nomad_namespace:
+nomad_data_dir:   /opt/nomad
+nomad_bind_addr:  "{{ ansible_default_ipv4.address }}"
+#nomad_tags:
+#nomad_consul:
+nomad_ports:
+_nomad_ports_default:
+  http: 4646
+  rpc:  4647
+  serf: 4648
+#nomad_server:
 
 ...
