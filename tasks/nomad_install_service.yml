@@ -11,7 +11,8 @@
 
 - name: Ensure nomad package installed
   ansible.builtin.apt:
-    name: "nomad{% if nomad_version != 'latest' %}={{ nomad_version }}{% endif %}"
+    update_cache: true
+    name:         "nomad{% if nomad_version != 'latest' %}={{ nomad_version }}{% endif %}"
 
 - name: Ensure nomad service enabled
   ansible.builtin.systemd:
