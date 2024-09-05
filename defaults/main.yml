@@ -28,5 +28,7 @@ _nomad_ports_defaults:
   serf: 4648
 nomad_tls_enable: false
 #nomad_server:
+nomad_acl:
+  enabled: false
 
 ...
