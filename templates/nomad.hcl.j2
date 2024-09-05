@@ -1,4 +1,6 @@
+{% if nomad_datacenter is defined %}
 datacenter = "{{ nomad_datacenter }}"
+{% endif %}
 {% if nomad_name is defined %}
 name = "{{ nomad_name }}"
 {% endif %}

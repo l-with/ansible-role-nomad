@@ -12,6 +12,7 @@ nomad_user:           nomad
 nomad_group:          nomad
 
 ## config
+#nomad_datacenter:
 nomad_name:       "{{ ansible_hostname }}"
 #nomad_namespace:
 nomad_data_dir:   /opt/nomad
