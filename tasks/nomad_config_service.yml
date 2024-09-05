@@ -13,16 +13,16 @@
 
 - name: Ensure nomad base config
   ansible.builtin.template:
-    src:   base.hcl.j2
-    dest:  "{{ nomad_config_path }}/base.hcl"
+    src:   nomad.hcl.j2
+    dest:  "{{ nomad_config_path }}/nomad.hcl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
     mode:  u=rw,g=r
 
 - name: Ensure nomad client config
   ansible.builtin.template:
-    src:   client.hcl.j2
-    dest:  "{{ nomad_config_path }}/client.hcl"
+    src:   nomad_client.hcl.j2
+    dest:  "{{ nomad_config_path }}/nomad_client.hcl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
     mode:  u=rw,g=r
@@ -30,8 +30,8 @@
 
 - name: Ensure nomad server config
   ansible.builtin.template:
-    src:   server.hcl.j2
-    dest:  "{{ nomad_config_path }}/server.hcl"
+    src:   nomad_server.hcl.j2
+    dest:  "{{ nomad_config_path }}/nomad_server.hcl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
     mode:  u=rw,g=r
