@@ -26,6 +26,7 @@ _nomad_ports_defaults:
   http: 4646
   rpc:  4647
   serf: 4648
+nomad_tls_enable: true
 #nomad_server:
 
 ...
