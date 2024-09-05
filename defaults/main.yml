@@ -30,5 +30,9 @@ nomad_tls_enable: false
 #nomad_server:
 nomad_acl:
   enabled: false
+nomad_server:
+_nomad_server_defaults:
+  enabled:          true
+  bootstrap_expect: 3
 
 ...

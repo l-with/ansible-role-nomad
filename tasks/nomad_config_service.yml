@@ -11,6 +11,10 @@
   ansible.builtin.set_fact:
     nomad_ports: "{{ nomad_ports | combine(_nomad_ports_defaults) }}"
 
+- name: Ensure dict nomad_server combined with defaults
+  ansible.builtin.set_fact:
+    nomad_server: "{{ nomad_server | combine(_nomad_server_defaults) }}"
+
 - name: Ensure nomad base config
   ansible.builtin.template:
     src:   nomad.hcl.j2
