@@ -95,7 +95,7 @@ ports {
   serf = {{ nomad_ports.serf }}
 }
 
-{% if nomad_tls_enable | bool | to_json %}
+{% if nomad_tls_enable  %}
 tls {
   http = {{ nomad_tls.http | bool | to_json }}
   rpc  = {{ nomad_tls.rpc | bool | to_json }}
