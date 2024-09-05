@@ -5,7 +5,6 @@
     msg: "nomad_install_method '{{ nomad_install_method }}' not supported"
   when: nomad_install and nomad_install_method not in ['service']
 
-
 - name: Ensure install nomad
   ansible.builtin.include_tasks: "nomad_install_{{ nomad_install_method }}.yml"
   when: nomad_install
@@ -31,6 +30,5 @@
     group: "{{ nomad_group }}"
     owner: "{{ nomad_user }}"
   when: _nomad_etc_lets_encrypt_path
-
 
 ...

@@ -19,7 +19,7 @@ nomad_bind_addr:  "{{ ansible_default_ipv4.address }}"
 #nomad_tags:
 #nomad_consul:
 nomad_ports:
-_nomad_ports_default:
+_nomad_ports_defaults:
   http: 4646
   rpc:  4647
   serf: 4648
