@@ -25,21 +25,23 @@
 
 - name: Ensure nomad client config
   ansible.builtin.template:
-    src:   nomad_client.hcl.j2
-    dest:  "{{ nomad_config_path }}/nomad_client.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-    mode:  u=rw,g=r
+    src:           nomad_client.hcl.j2
+    dest:          "{{ nomad_config_path }}/nomad_client.hcl"
+    owner:         "{{ nomad_user }}"
+    group:         "{{ nomad_group }}"
+    mode:          u=rw,g=r
+    lstrip_blocks: true
   when: nomad_role == 'client'
   notify: restart nomad
 
 - name: Ensure nomad server config
   ansible.builtin.template:
-    src:   nomad_server.hcl.j2
-    dest:  "{{ nomad_config_path }}/nomad_server.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-    mode:  u=rw,g=r
+    src:           nomad_server.hcl.j2
+    dest:          "{{ nomad_config_path }}/nomad_server.hcl"
+    owner:         "{{ nomad_user }}"
+    group:         "{{ nomad_group }}"
+    mode:          u=rw,g=r
+    lstrip_blocks: true
   when: nomad_role == 'server'
   notify: restart nomad
 
