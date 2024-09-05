@@ -19,6 +19,8 @@ nomad_data_dir:   /opt/nomad
 nomad_bind_addr:  "{{ ansible_default_ipv4.address }}"
 #nomad_tags:
 #nomad_consul:
+#nomad_addresses:
+#nomad_advertise
 nomad_ports:
 _nomad_ports_defaults:
   http: 4646

@@ -61,12 +61,21 @@ leave_on_terminate = {{ nomad_leave_on_terminate | bool | to_json }}
 # sentinel 
 # audit {}
 
+{% if nomad_addresses is defined %}
 addresses {
+{% if nomad_addresses.http is defined %}
   http = "{{ nomad_addresses.http }}"
+{% endif %}
+{% if nomad_addresses.rpc is defined %}
   rpc  = "{{ nomad_addresses.rpc }}"
+{% endif %}
+{% if nomad_addresses.serf is defined %}
   serf = "{{ nomad_addresses.serf }}"
+{% endif %}
 }
+{% endif %}
 
+{% if nomad_advertise is defined %}
 advertise {
 {% if nomad_advertise.http is defined %}
   http = "{{ nomad_advertise.http }}"
@@ -78,6 +87,7 @@ advertise {
   serf = "{{ nomad_advertise.serf }}"
 {% endif %}
 }
+{% endif %}
 
 ports {
   http = {{ nomad_ports.http }}
