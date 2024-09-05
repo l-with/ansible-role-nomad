@@ -31,6 +31,7 @@
     group: "{{ nomad_group }}"
     mode:  u=rw,g=r
   when: nomad_role == 'client'
+  notify: restart nomad
 
 - name: Ensure nomad server config
   ansible.builtin.template:
@@ -40,5 +41,6 @@
     group: "{{ nomad_group }}"
     mode:  u=rw,g=r
   when: nomad_role == 'server'
+  notify: restart nomad
 
 ...
