@@ -45,22 +45,6 @@ leave_on_interrupt = {{ nomad_leave_on_interrupt | bool | to_json }}
 leave_on_terminate = {{ nomad_leave_on_terminate | bool | to_json }}
 {% endif %}
 
-# http_api_response_headers
-# limits {}
-# log_level
-# log_include_location
-# log_json
-# log_file
-# log_rotate_bytes
-# log_rotate_duration
-# log_rotate_max_files
-# syslog_facility
-# plugin_dir
-# plugin
-# region
-# sentinel 
-# audit {}
-
 {% if nomad_addresses is defined %}
 addresses {
 {% if nomad_addresses.http is defined %}
@@ -159,3 +143,19 @@ token = "{{ nomad_consul.token }}"
 {% if nomad_tags is defined %}
 tags = ["{{ nomad_tags | join('", "') }}"]
 {% endif %}
+
+# http_api_response_headers
+# limits {}
+# log_level
+# log_include_location
+# log_json
+# log_file
+# log_rotate_bytes
+# log_rotate_duration
+# log_rotate_max_files
+# syslog_facility
+# plugin_dir
+# plugin
+# region
+# sentinel 
+# audit {}
