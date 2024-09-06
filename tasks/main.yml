@@ -5,9 +5,30 @@
     msg: "nomad_install_method '{{ nomad_install_method }}' not supported"
   when: nomad_install and nomad_install_method not in ['service']
 
-
 - name: Ensure install nomad
   ansible.builtin.include_tasks: "nomad_install_{{ nomad_install_method }}.yml"
   when: nomad_install
+
+- name: Ensure nomad config
+  ansible.builtin.include_tasks: nomad_config_{{ nomad_install_method }}.yml
+  when: nomad_configure
+
+- name: Read /etc/letsencrypt stat
+  ansible.builtin.stat:
+    path: /etc/letsencrypt
+  ignore_errors: true
+  register: _nomad_etc_lets_encrypt_path_stat
+
+- name: Set fact _nomad_etc_lets_encrypt_path
+  ansible.builtin.set_fact:
+    _nomad_etc_lets_encrypt_path: "{{ _nomad_etc_lets_encrypt_path_stat.stat.exists }}"
+
+- name: Ensure nomad is group and owner of Let's Encrypt Certificate Package files
+  ansible.builtin.file:
+    path:    /etc/letsencrypt
+    recurse: true
+    group: "{{ nomad_group }}"
+    owner: "{{ nomad_user }}"
+  when: _nomad_etc_lets_encrypt_path
 
 ...

@@ -9,32 +9,45 @@
 
 - name: Ensure dict nomad_ports combined with defaults
   ansible.builtin.set_fact:
-    nomad_ports: "{{ nomad_ports | combine(_nomad_ports_defaults) }}"
+    nomad_ports: "{{ _nomad_ports_defaults | combine(nomad_ports) }}"
+
+- name: Ensure dict nomad_server combined with defaults
+  ansible.builtin.set_fact:
+    nomad_server: "{{ _nomad_server_defaults | combine(nomad_server) }}"
+
+- name: Print nomad_server
+  ansible.builtin.debug:
+    msg: "nomad_server: {{ nomad_server }}"
 
 - name: Ensure nomad base config
   ansible.builtin.template:
-    src:   base.hcl.j2
-    dest:  "{{ nomad_config_path }}/base.hcl"
+    src:   nomad.hcl.j2
+    dest:  "{{ nomad_config_path }}/nomad.hcl"
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
     mode:  u=rw,g=r
+  notify: restart nomad
 
 - name: Ensure nomad client config
   ansible.builtin.template:
-    src:   client.hcl.j2
-    dest:  "{{ nomad_config_path }}/client.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-    mode:  u=rw,g=r
+    src:           nomad_client.hcl.j2
+    dest:          "{{ nomad_config_path }}/nomad_client.hcl"
+    owner:         "{{ nomad_user }}"
+    group:         "{{ nomad_group }}"
+    mode:          u=rw,g=r
+    lstrip_blocks: true
   when: nomad_role == 'client'
+  notify: restart nomad
 
 - name: Ensure nomad server config
   ansible.builtin.template:
-    src:   server.hcl.j2
-    dest:  "{{ nomad_config_path }}/server.hcl"
-    owner: "{{ nomad_user }}"
-    group: "{{ nomad_group }}"
-    mode:  u=rw,g=r
+    src:           nomad_server.hcl.j2
+    dest:          "{{ nomad_config_path }}/nomad_server.hcl"
+    owner:         "{{ nomad_user }}"
+    group:         "{{ nomad_group }}"
+    mode:          u=rw,g=r
+    lstrip_blocks: true
   when: nomad_role == 'server'
+  notify: restart nomad
 
 ...

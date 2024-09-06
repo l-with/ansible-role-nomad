@@ -1,29 +1,25 @@
+{% if nomad_datacenter is defined %}
 datacenter = "{{ nomad_datacenter }}"
+{% endif %}
 {% if nomad_name is defined %}
 name = "{{ nomad_name }}"
 {% endif %}
 {% if nomad_namespace is defined %}
 namespace  = "{{ nomad_namespace }}"
 {% endif %}
-
 data_dir = "{{ nomad_data_dir }}"
-
-{% if nomad_bind_address is defined %}
-bind_addr = "{{ nomad_bind_address }}"
+{% if nomad_bind_addr is defined %}
+bind_addr = "{{ nomad_bind_addr }}"
 {% endif %}
-
 {% if nomad_timeout is defined %}
 timeout = "{{ nomad_timeout }}"
 {% endif %}
-
 {% if nomad_token is defined %}
 token = "{{ nomad_token }}"
 {% endif %}
-
 {% if nomad_verify_ssl is defined %}
 verify_ssl = {{ nomad_verify_ssl | bool | to_json }}
 {% endif %}
-
 {% if nomad_disable_anonymous_signature is defined %}
 disable_anonymous_signature = {{ nomad_disable_anonymous_signature | bool | to_json }}
 {% endif %}
@@ -42,29 +38,20 @@ leave_on_interrupt = {{ nomad_leave_on_interrupt | bool | to_json }}
 {% if nomad_leave_on_terminate is defined %}
 leave_on_terminate = {{ nomad_leave_on_terminate | bool | to_json }}
 {% endif %}
-
-# http_api_response_headers
-# limits {}
-# log_level
-# log_include_location
-# log_json
-# log_file
-# log_rotate_bytes
-# log_rotate_duration
-# log_rotate_max_files
-# syslog_facility
-# plugin_dir
-# plugin
-# region
-# sentinel 
-# audit {}
-
+{% if nomad_addresses is defined %}
 addresses {
+{% if nomad_addresses.http is defined %}
   http = "{{ nomad_addresses.http }}"
+{% endif %}
+{% if nomad_addresses.rpc is defined %}
   rpc  = "{{ nomad_addresses.rpc }}"
+{% endif %}
+{% if nomad_addresses.serf is defined %}
   serf = "{{ nomad_addresses.serf }}"
+{% endif %}
 }
-
+{% endif %}
+{% if nomad_advertise is defined %}
 advertise {
 {% if nomad_advertise.http is defined %}
   http = "{{ nomad_advertise.http }}"
@@ -76,14 +63,13 @@ advertise {
   serf = "{{ nomad_advertise.serf }}"
 {% endif %}
 }
-
+{% endif %}
 ports {
   http = {{ nomad_ports.http }}
   rpc  = {{ nomad_ports.rpc }}
-  serf = {{ nomad_ports.serf_lan }}
+  serf = {{ nomad_ports.serf }}
 }
-
-{% if nomad_tls_enable | bool | to_json %}
+{% if nomad_tls_enable  %}
 tls {
   http = {{ nomad_tls.http | bool | to_json }}
   rpc  = {{ nomad_tls.rpc | bool | to_json }}
@@ -95,7 +81,6 @@ tls {
   verify_server_hostname = {{ nomad_tls.verify_server_hostname | bool | to_json }}
 }
 {% endif %}
-
 acl {
   enabled = {{ nomad_acl.enabled | bool | to_json }}
 {% if nomad_acl.token_ttl is defined %}
@@ -117,33 +102,25 @@ acl {
   token_max_expiration_ttl = "{{ nomad_acl.token_max_expiration_ttl }}"
 {% endif %}
 }
-
-{% if nomad_consul.token is defined %}
-consul {
-{% if nomad_consul.address is defined %}
-  address = "{{ nomad_consul.address }}"
-{% endif %}
-{% if nomad_consul.auth is defined %}
-  auth    = "{{ nomad_consul.auth }}"
-{% endif %}
-{% if nomad_consul.auto_advertise is defined %}
-  auto_advertise = {{ nomad_consul.auto_advertise | bool | to_json }}
-{% endif %}
-{% if nomad_consul.checks_use_advertise is defined %}
-  checks_use_advertise = {{ nomad_consul.checks_use_advertise | bool | to_json }}
-{% endif %}
-token = "{{ nomad_consul.token }}"
-  server_auto_join = {{ nomad_consul.server_auto_join | bool | to_json }}
-  allow_unauthenticated = {{ nomad_consul.allow_unauthenticated | bool | to_json }}
-{% if nomad_consul.ssl | bool %}
-  ssl       = {{ nomad_consul.ssl | bool | to_json }}
-  ca_file   = "{{ nomad_consul.ca_file }}"
-  cert_file = "{{ nomad_consul.cert_file }}"
-  key_file  = "{{ nomad_consul.key_file }}"
-{% endif %}
-}
-{% endif %}
-
 {% if nomad_tags is defined %}
 tags = ["{{ nomad_tags | join('", "') }}"]
 {% endif %}
+{% if nomad_consul is defined %}
+{% endif %}
+{#
+# http_api_response_headers
+# limits {}
+# log_level
+# log_include_location
+# log_json
+# log_file
+# log_rotate_bytes
+# log_rotate_duration
+# log_rotate_max_files
+# syslog_facility
+# plugin_dir
+# plugin
+# region
+# sentinel 
+# audit {}
+#}

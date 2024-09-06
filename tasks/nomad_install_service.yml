@@ -7,15 +7,17 @@
 
 - name: Ensure Hashicorp repository
   ansible.builtin.shell:
-    cmd:echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    cmd:     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    creates: /etc/apt/sources.list.d/hashicorp.list
 
 - name: Ensure nomad package installed
   ansible.builtin.apt:
-    name: "nomad{% if nomad_version != 'latest' %}={{ nomad_version }}{% endif %}"
+    update_cache: true
+    name:         "nomad{% if nomad_version != 'latest' %}={{ nomad_version }}{% endif %}"
 
 - name: Ensure nomad service enabled
   ansible.builtin.systemd:
-    name:    consul
+    name:    nomad
     enabled: true
 
 - name: Ensure hold nomad package version
