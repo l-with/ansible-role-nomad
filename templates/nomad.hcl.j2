@@ -143,8 +143,9 @@ token = "{{ nomad_consul.token }}"
 {% if nomad_tags is defined %}
 tags = ["{{ nomad_tags | join('", "') }}"]
 {% endif %}
+{#
 
-# http_api_response_headers
+  # http_api_response_headers
 # limits {}
 # log_level
 # log_include_location
@@ -159,3 +160,4 @@ tags = ["{{ nomad_tags | join('", "') }}"]
 # region
 # sentinel 
 # audit {}
+#}
