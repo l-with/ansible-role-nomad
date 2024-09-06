@@ -7,26 +7,20 @@ name = "{{ nomad_name }}"
 {% if nomad_namespace is defined %}
 namespace  = "{{ nomad_namespace }}"
 {% endif %}
-
 data_dir = "{{ nomad_data_dir }}"
-{% if nomad_bind_address is defined %}
-
+{% if nomad_bind_addr is defined %}
 bind_addr = "{{ nomad_bind_addr }}"
 {% endif %}
 {% if nomad_timeout is defined %}
-
 timeout = "{{ nomad_timeout }}"
 {% endif %}
 {% if nomad_token is defined %}
-
 token = "{{ nomad_token }}"
 {% endif %}
 {% if nomad_verify_ssl is defined %}
-
 verify_ssl = {{ nomad_verify_ssl | bool | to_json }}
 {% endif %}
 {% if nomad_disable_anonymous_signature is defined %}
-
 disable_anonymous_signature = {{ nomad_disable_anonymous_signature | bool | to_json }}
 {% endif %}
 {% if nomad_disable_update_check is defined %}
@@ -45,7 +39,6 @@ leave_on_interrupt = {{ nomad_leave_on_interrupt | bool | to_json }}
 leave_on_terminate = {{ nomad_leave_on_terminate | bool | to_json }}
 {% endif %}
 {% if nomad_addresses is defined %}
-
 addresses {
 {% if nomad_addresses.http is defined %}
   http = "{{ nomad_addresses.http }}"
@@ -59,7 +52,6 @@ addresses {
 }
 {% endif %}
 {% if nomad_advertise is defined %}
-
 advertise {
 {% if nomad_advertise.http is defined %}
   http = "{{ nomad_advertise.http }}"
@@ -72,14 +64,12 @@ advertise {
 {% endif %}
 }
 {% endif %}
-
 ports {
   http = {{ nomad_ports.http }}
   rpc  = {{ nomad_ports.rpc }}
   serf = {{ nomad_ports.serf }}
 }
 {% if nomad_tls_enable  %}
-
 tls {
   http = {{ nomad_tls.http | bool | to_json }}
   rpc  = {{ nomad_tls.rpc | bool | to_json }}
@@ -91,7 +81,6 @@ tls {
   verify_server_hostname = {{ nomad_tls.verify_server_hostname | bool | to_json }}
 }
 {% endif %}
-
 acl {
   enabled = {{ nomad_acl.enabled | bool | to_json }}
 {% if nomad_acl.token_ttl is defined %}
@@ -114,7 +103,6 @@ acl {
 {% endif %}
 }
 {% if nomad_consul.token is defined %}
-
 consul {
 {% if nomad_consul.address is defined %}
   address = "{{ nomad_consul.address }}"
@@ -140,7 +128,6 @@ token = "{{ nomad_consul.token }}"
 }
 {% endif %}
 {% if nomad_tags is defined %}
-
 tags = ["{{ nomad_tags | join('", "') }}"]
 {% endif %}
 {#
