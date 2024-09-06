@@ -39,8 +39,8 @@ _nomad_tls_defaults:
   verify_https_client:    true
   verify_server_hostname: true
   ca_file:                "{{ nomad_tls_path }}/nomad-agent-ca.pem"
-  cert_file:              "{{ nomad_tls_path }}/{{ consul_datacenter }}-{{ consul_role }}-{{ consul_domain }}-0.pem"    
-  key_file:               "{{ nomad_tls_path }}/{{ consul_datacenter }}-{{ consul_role }}-{{ consul_domain }}-0-key.pem"
+  cert_file:              "{{ nomad_tls_path }}/global-{{ nomad_role }}-{{ nomad_domain }}.pem"    
+  key_file:               "{{ nomad_tls_path }}/global-{{ nomad_role }}-{{ nomad_domain }}-key.pem"
 
 nomad_acl:
   enabled: false
