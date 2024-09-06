@@ -15,6 +15,10 @@
   ansible.builtin.set_fact:
     nomad_server: "{{ nomad_server | combine(_nomad_server_defaults) }}"
 
+- name: Print nomad_server
+  ansible.builtin.debug:
+    msg: "nomad_server: {{ nomad_server }}"
+    
 - name: Ensure nomad base config
   ansible.builtin.template:
     src:   nomad.hcl.j2
