@@ -105,6 +105,29 @@ acl {
 {% if nomad_tags is defined %}
 tags = ["{{ nomad_tags | join('", "') }}"]
 {% endif %}
+{% if nomad_consul is defined %}
+consul {
+{% if nomad_consul.address is defined %}
+  address = "{{ nomad_consul.address }}"
+{% endif %}
+{% if nomad_consul.auth is defined %}
+  auth = "{{ nomad_consul.auth }}"
+{% endif %}
+{% if nomad_consul.auto_advertise is defined %}
+  auto_advertise = {{ nomad_consul.auto_advertise | bool | to_json }}
+{% endif %}
+{% if nomad_consul.checks_use_advertise is defined %}
+  checks_use_advertise = {{ nomad_consul.checks_use_advertise | bool | to_json }}
+{% endif %}
+  token = "{{ nomad_consul.token }}"
+{% if nomad_consul.ssl | bool %}
+  ssl       = {{ nomad_consul.ssl | bool | to_json }}
+  ca_file   = "{{ nomad_consul.ca_file }}"
+  cert_file = "{{ nomad_consul.cert_file }}"
+  key_file  = "{{ nomad_consul.key_file }}"
+{% endif %}
+}
+{% endif %}
 {#
 # http_api_response_headers
 # limits {}
