@@ -8,6 +8,7 @@ nomad_configure:      true
 nomad_role:           client
 nomad_home_path:      /srv/nomad
 nomad_config_path:    "{% if nomad_install_method not in ['service', 'binary'] %}{{ nomad_home_path }}/config{% else %}/etc/nomad.d{% endif %}"
+nomad_tls_path:       "{{ nomad_config_path }}/certs"
 nomad_user:           nomad
 nomad_group:          nomad
 
@@ -29,7 +30,15 @@ _nomad_ports_defaults:
 #nomad_tls_ca:
 #nomad_tls_ca_key:
 nomad_tls_enable: false
-#nomad_server:
+#nomad_tls:
+_nomad_tls_defaults:
+  verify_incoming:        true
+  verify_outgoing:        true
+  verify_server_hostname: true
+  ca_file:                "{{ nomad_tls_path }}/nomad-agent-ca.pem"
+  cert_file:              "{{ nomad_tls_path }}/{{ consul_datacenter }}-{{ consul_role }}-{{ consul_domain }}-0.pem"    
+  key_file:               "{{ nomad_tls_path }}/{{ consul_datacenter }}-{{ consul_role }}-{{ consul_domain }}-0-key.pem"
+
 nomad_acl:
   enabled: false
 nomad_server:

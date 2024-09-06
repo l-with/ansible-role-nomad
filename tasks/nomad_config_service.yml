@@ -19,6 +19,14 @@
   ansible.builtin.debug:
     msg: "nomad_server: {{ nomad_server }}"
 
+- name: Ensure nomad_tls_path
+  ansible.builtin.file:
+    path:  "{{ nomad_tls_path }}"
+    state: directory
+    group: "{{ nomad_group }}"
+    owner: "{{ nomad_user }}"
+    mode:  u=rwx,g=rx,o=x
+
 - name: Ensure nomad tls ca
   ansible.builtin.copy:
     dest:  "{{ nomad_tls_path }}/nomad-agent-ca.pem"
