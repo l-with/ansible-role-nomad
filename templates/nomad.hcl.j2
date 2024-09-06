@@ -41,19 +41,6 @@ leave_on_interrupt = {{ nomad_leave_on_interrupt | bool | to_json }}
 {% if nomad_leave_on_terminate is defined %}
 leave_on_terminate = {{ nomad_leave_on_terminate | bool | to_json }}
 {% endif %}
-{% if nomad_addresses is defined %}
-addresses {
-{% if nomad_addresses.http is defined %}
-  http = "{{ nomad_addresses.http }}"
-{% endif %}
-{% if nomad_addresses.rpc is defined %}
-  rpc  = "{{ nomad_addresses.rpc }}"
-{% endif %}
-{% if nomad_addresses.serf is defined %}
-  serf = "{{ nomad_addresses.serf }}"
-{% endif %}
-}
-{% endif %}
 {% if nomad_advertise is defined %}
 advertise {
 {% if nomad_advertise.http is defined %}
@@ -67,6 +54,7 @@ advertise {
 {% endif %}
 }
 {% endif %}
+{% if nomad_addresses is defined %}
 addresses {
 {% if nomad_addresses.http is defined %}
   http = "{{ nomad_addresses.http }}"
@@ -78,6 +66,8 @@ addresses {
   serf = "{{ nomad_addresses.serf }}"
 {% endif %}
 }
+{% endif %}
+{% if nomad_ports is defined %}
 ports {
 {% if nomad_ports.http is defined %}
   http = {{ nomad_ports.http }}
@@ -89,6 +79,7 @@ ports {
   serf = {{ nomad_ports.serf }}
 {% endif %}
 }
+{% endif %}
 {% if nomad_tls_enable  %}
 tls {
   http = {{ nomad_tls.http | bool | to_json }}
