@@ -15,6 +15,10 @@
   ansible.builtin.set_fact:
     nomad_tls: "{{ _nomad_tls_defaults | combine(nomad_tls) }}"
 
+- name: Ensure dict nomad_addresses combined with defaults
+  ansible.builtin.set_fact:
+    nomad_addresses: "{{ _nomad_addresses_defaults | combine(nomad_addresses) }}"
+
 - name: Ensure dict nomad_ports combined with defaults
   ansible.builtin.set_fact:
     nomad_ports: "{{ _nomad_ports_defaults | combine(nomad_ports) }}"
