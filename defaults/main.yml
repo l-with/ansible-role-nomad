@@ -18,10 +18,15 @@ nomad_domain:     nomad
 nomad_name:       "{{ ansible_hostname }}"
 #nomad_namespace:
 nomad_data_dir:   /opt/nomad
+nomad_ui:
+_nomad_ui_defaults:
+  enabled: false
 nomad_bind_addr:  "{{ ansible_default_ipv4.address }}"
 #nomad_tags:
 #nomad_consul:
-#nomad_addresses:
+nomad_addresses:
+_nomad_addresses_defaults:
+  http: "127.0.0.1"
 #nomad_advertise
 nomad_ports:
 _nomad_ports_defaults:
@@ -34,14 +39,13 @@ nomad_tls_generate_cert: true
 nomad_tls_enable: true
 nomad_tls:
 _nomad_tls_defaults:
-  http:                   true
+  http:                   false
   rpc:                    true   
   verify_https_client:    true
   verify_server_hostname: true
   ca_file:                "{{ nomad_tls_path }}/nomad-agent-ca.pem"
   cert_file:              "{{ nomad_tls_path }}/global-{{ nomad_role }}-{{ nomad_domain }}.pem"    
   key_file:               "{{ nomad_tls_path }}/global-{{ nomad_role }}-{{ nomad_domain }}-key.pem"
-
 nomad_acl:
   enabled: false
 nomad_server:
