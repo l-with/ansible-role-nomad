@@ -13,20 +13,20 @@ data_dir = "{{ nomad_data_dir }}"
 {% if nomad_bind_address is defined %}
 bind_addr = "{{ nomad_bind_address }}"
 {% endif %}
-
 {% if nomad_timeout is defined %}
+
 timeout = "{{ nomad_timeout }}"
 {% endif %}
-
 {% if nomad_token is defined %}
+
 token = "{{ nomad_token }}"
 {% endif %}
-
 {% if nomad_verify_ssl is defined %}
+
 verify_ssl = {{ nomad_verify_ssl | bool | to_json }}
 {% endif %}
-
 {% if nomad_disable_anonymous_signature is defined %}
+
 disable_anonymous_signature = {{ nomad_disable_anonymous_signature | bool | to_json }}
 {% endif %}
 {% if nomad_disable_update_check is defined %}
