@@ -19,6 +19,24 @@
   ansible.builtin.debug:
     msg: "nomad_server: {{ nomad_server }}"
 
+- name: Ensure nomad tls ca
+  ansible.builtin.copy:
+    dest:  "{{ nomad_tls_path }}/nomad-agent-ca.pem"
+    content: "{{ nomad_tls_ca }}"
+    group: "{{ nomad_group }}"
+    owner: "{{ nomad_user }}"
+    mode:  u=rw,g=r
+  when: nomad_tls_ca is defined
+
+- name: Ensure nomad tls ca key
+  ansible.builtin.copy:
+    dest:  "{{ nomad_tls_path }}/nomad-agent-ca-key.pem"
+    content: "{{ nomad_tls_ca_key }}"
+    group: "{{ nomad_group }}"
+    owner: "{{ nomad_user }}"
+    mode:  u=rw,g=r
+  when: nomad_tls_ca_key is defined
+
 - name: Ensure nomad base config
   ansible.builtin.template:
     src:   nomad.hcl.j2
