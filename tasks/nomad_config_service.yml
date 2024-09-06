@@ -22,6 +22,7 @@
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
     mode:  u=rw,g=r
+  notify: restart nomad
 
 - name: Ensure nomad client config
   ansible.builtin.template:
