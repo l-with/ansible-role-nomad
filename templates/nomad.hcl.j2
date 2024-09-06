@@ -8,6 +8,9 @@ name = "{{ nomad_name }}"
 namespace  = "{{ nomad_namespace }}"
 {% endif %}
 data_dir = "{{ nomad_data_dir }}"
+ui {
+  enabled = "{{ nomad_ui.enabled}}"
+}
 {% if nomad_bind_addr is defined %}
 bind_addr = "{{ nomad_bind_addr }}"
 {% endif %}
@@ -64,10 +67,27 @@ advertise {
 {% endif %}
 }
 {% endif %}
+addresses {
+{% if nomad_addresses.http is defined %}
+  http = "{{ nomad_addresses.http }}"
+{% endif %}
+{% if nomad_addresses.rpc is defined %}
+  rpc  = "{{ nomad_addresses.rpc }}"
+{% endif %}
+{% if nomad_addresses.serf is defined %}
+  serf = "{{ nomad_addresses.serf }}"
+{% endif %}
+}
 ports {
+{% if nomad_ports.http is defined %}
   http = {{ nomad_ports.http }}
+{% endif %}
+{% if nomad_ports.rpc is defined %}
   rpc  = {{ nomad_ports.rpc }}
+{% endif %}
+{% if nomad_ports.serf is defined %}
   serf = {{ nomad_ports.serf }}
+{% endif %}
 }
 {% if nomad_tls_enable  %}
 tls {
