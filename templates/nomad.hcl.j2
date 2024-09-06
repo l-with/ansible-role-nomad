@@ -11,7 +11,7 @@ namespace  = "{{ nomad_namespace }}"
 data_dir = "{{ nomad_data_dir }}"
 {% if nomad_bind_address is defined %}
 
-bind_addr = "{{ nomad_bind_address }}"
+bind_addr = "{{ nomad_bind_addr }}"
 {% endif %}
 {% if nomad_timeout is defined %}
 
