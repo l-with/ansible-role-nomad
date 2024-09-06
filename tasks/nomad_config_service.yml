@@ -7,6 +7,10 @@
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
 
+- name: Ensure dict nomad_tls combined with defaults
+  ansible.builtin.set_fact:
+    nomad_tls: "{{ _nomad_tls_defaults | combine(nomad_tls) }}"
+
 - name: Ensure dict nomad_ports combined with defaults
   ansible.builtin.set_fact:
     nomad_ports: "{{ _nomad_ports_defaults | combine(nomad_ports) }}"
@@ -44,6 +48,18 @@
     owner: "{{ nomad_user }}"
     mode:  u=rw,g=r
   when: nomad_tls_ca_key is defined
+
+- name: Ensure generate nomad tls cert
+  ansible.builtin.include_tasks: nomad_tls_generate_cert.yml
+  when: nomad_tls_generate_cert
+
+- name: Ensure nomad_data_dir
+  ansible.builtin.file:
+    path:  "{{ nomad_data_dir }}"
+    state: directory
+    group: "{{ nomad_group }}"
+    owner: "{{ nomad_user }}"
+    mode:  u=rwx,g=rx,o=x
 
 - name: Ensure nomad base config
   ansible.builtin.template:

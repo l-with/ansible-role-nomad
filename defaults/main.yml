@@ -27,13 +27,15 @@ _nomad_ports_defaults:
   http: 4646
   rpc:  4647
   serf: 4648
+nomad_tls_generate_cert: true
 #nomad_tls_ca:
 #nomad_tls_ca_key:
-nomad_tls_enable: false
+nomad_tls_enable: true
 #nomad_tls:
 _nomad_tls_defaults:
-  verify_incoming:        true
-  verify_outgoing:        true
+  http:                   true
+  rpc:                    true   
+  verify_https_client:    true
   verify_server_hostname: true
   ca_file:                "{{ nomad_tls_path }}/nomad-agent-ca.pem"
   cert_file:              "{{ nomad_tls_path }}/{{ consul_datacenter }}-{{ consul_role }}-{{ consul_domain }}-0.pem"    
