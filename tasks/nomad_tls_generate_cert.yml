@@ -2,19 +2,19 @@
 
 - name: Ensure nomad tls cert
   ansible.builtin.shell:
-    cmd:     "nomad tls cert create -{{ nomad_role }} -dc {{ nomad_datacenter }} -domain {{ nomad_domain }}{% if nomad_role == 'server' %} -node {{ nomad_node_name }}{% endif %}"
+    cmd:     "nomad tls cert create -{{ nomad_role }}"
     chdir:   "{{ nomad_tls_path }}"
-    creates: "{{ nomad_tls_path }}/{{ nomad_datacenter }}-{{ nomad_role }}-{{ nomad_domain }}-0.pem"
+    creates: "{{ nomad_tls_path }}/global-{{ nomad_role }}-{{ nomad_domain }}.pem"
 
 - name: Ensure nomad tls cert group und owner
   ansible.builtin.file:
-    path:  "{{ nomad_tls_path }}/{{ nomad_datacenter }}-{{ nomad_role }}-{{ nomad_domain }}-0.pem"
+    path:  "{{ nomad_tls_path }}/global-{{ nomad_role }}-{{ nomad_domain }}.pem"
     group: "{{ nomad_group }}"
     owner: "{{ nomad_user }}"
 
 - name: Ensure nomad tls cert key group und owner
   ansible.builtin.file:
-    path:  "{{ nomad_tls_path }}/{{ nomad_datacenter }}-{{ nomad_role }}-{{ nomad_domain }}-0-key.pem"
+    path:  "{{ nomad_tls_path }}/global-{{ nomad_role }}-{{ nomad_domain }}-key.pem"
     group: "{{ nomad_group }}"
     owner: "{{ nomad_user }}"
 
