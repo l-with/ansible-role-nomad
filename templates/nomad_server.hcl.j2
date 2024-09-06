@@ -31,6 +31,29 @@ server {
     # start_join
   }  
 {% endif %}
+{% if nomad_consul is defined %}
+consul {
+{% if nomad_consul.address is defined %}
+  address = "{{ nomad_consul.address }}"
+{% endif %}
+{% if nomad_consul.auth is defined %}
+  auth = "{{ nomad_consul.auth }}"
+{% endif %}
+{% if nomad_consul.auto_advertise is defined %}
+  auto_advertise = {{ nomad_consul.auto_advertise | bool | to_json }}
+{% endif %}
+{% if nomad_consul.checks_use_advertise is defined %}
+  checks_use_advertise = {{ nomad_consul.checks_use_advertise | bool | to_json }}
+{% endif %}
+  token = "{{ nomad_consul.token }}"
+{% if nomad_consul.ssl | bool %}
+  ssl       = {{ nomad_consul.ssl | bool | to_json }}
+  ca_file   = "{{ nomad_consul.ca_file }}"
+  cert_file = "{{ nomad_consul.cert_file }}"
+  key_file  = "{{ nomad_consul.key_file }}"
+{% endif %}
+}
+{% endif %}
 {#
   # node_gc_threshold (string: "24h") - Specifies how long a node must be in a terminal state before it is garbage collected and purged from the system. This is specified using a label suffix like "30s" or "1h".
   # job_gc_interval (string: "5m") - Specifies the interval between the job garbage collections. Only jobs who have been terminal for at least job_gc_threshold will be collected. Lowering the interval will perform more frequent but smaller collections. Raising the interval will perform collections less frequently but collect more jobs at a time. Reducing this interval is useful if there is a large throughput of tasks, leading to a large set of dead jobs. This is specified using a label suffix like "30s" or "3m".
