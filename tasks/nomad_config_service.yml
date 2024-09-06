@@ -7,6 +7,10 @@
     owner: "{{ nomad_user }}"
     group: "{{ nomad_group }}"
 
+- name: Ensure dict nomad_ui combined with defaults
+  ansible.builtin.set_fact:
+    nomad_ui: "{{ _nomad_ui_defaults | combine(nomad_ui) }}"
+
 - name: Ensure dict nomad_tls combined with defaults
   ansible.builtin.set_fact:
     nomad_tls: "{{ _nomad_tls_defaults | combine(nomad_tls) }}"
