@@ -31,7 +31,7 @@ nomad_tls_generate_cert: true
 #nomad_tls_ca:
 #nomad_tls_ca_key:
 nomad_tls_enable: true
-#nomad_tls:
+nomad_tls:
 _nomad_tls_defaults:
   http:                   true
   rpc:                    true   
