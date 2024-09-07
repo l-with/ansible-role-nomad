@@ -17,7 +17,7 @@ client {
 {% if nomad_client.state_dir is defined %}
   state_dir = "{{ nomad_client.state_dir }}
 {% endif %}
-consul {
+  consul {
   {% if nomad_consul.address is defined %}
     address = "{{ nomad_consul.address }}"
   {% endif %}
