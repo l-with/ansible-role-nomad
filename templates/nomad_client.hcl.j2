@@ -17,27 +17,7 @@ client {
 {% if nomad_client.state_dir is defined %}
   state_dir = "{{ nomad_client.state_dir }}
 {% endif %}
-  consul {
-  {% if nomad_consul.address is defined %}
-    address = "{{ nomad_consul.address }}"
-  {% endif %}
-  {% if nomad_consul.auth is defined %}
-    auth = "{{ nomad_consul.auth }}"
-  {% endif %}
-  {% if nomad_consul.auto_advertise is defined %}
-    auto_advertise = {{ nomad_consul.auto_advertise | bool | to_json }}
-  {% endif %}
-  {% if nomad_consul.checks_use_advertise is defined %}
-    checks_use_advertise = {{ nomad_consul.checks_use_advertise | bool | to_json }}
-  {% endif %}
-    token = "{{ nomad_consul.token }}"
-  {% if nomad_consul.ssl is defined %}
-    ssl       = {{ nomad_consul.ssl | bool | to_json }}
-    ca_file   = "{{ nomad_consul.ca_file }}"
-    cert_file = "{{ nomad_consul.cert_file }}"
-    key_file  = "{{ nomad_consul.key_file }}"
-  {% endif %}
-  }  
+{#
   # chroot_env
   # max_kill_timeout (string: "30s") - Specifies the maximum amount of time a job is allowed to wait to exit. Individual jobs may customize their own kill timeout, but it may not exceed this value.
   # disable_remote_exec (bool: false) - Specifies if the client should disable remote task execution to tasks running on this client.
@@ -74,4 +54,26 @@ client {
   # drain_on_shutdown (drain_on_shutdown: nil) - Controls the behavior of the client when leave_on_interrupt or leave_on_terminate are set and the client receives the appropriate signal.
   # cgroup_parent (string: "/nomad") - Specifies the cgroup parent for which cgroup subsystems managed by Nomad will be mounted under. Currently this only applies to the cpuset subsystems. This field is ignored on non Linux platforms.
   # users (Users: nil) - Specifies options concerning Nomad client's use of operating system users.
+#}
 }
+consul {
+{% if nomad_consul.address is defined %}
+  address = "{{ nomad_consul.address }}"
+{% endif %}
+{% if nomad_consul.auth is defined %}
+  auth = "{{ nomad_consul.auth }}"
+{% endif %}
+{% if nomad_consul.auto_advertise is defined %}
+  auto_advertise = {{ nomad_consul.auto_advertise | bool | to_json }}
+{% endif %}
+{% if nomad_consul.checks_use_advertise is defined %}
+  checks_use_advertise = {{ nomad_consul.checks_use_advertise | bool | to_json }}
+{% endif %}
+  token = "{{ nomad_consul.token }}"
+{% if nomad_consul.ssl is defined %}
+  ssl       = {{ nomad_consul.ssl | bool | to_json }}
+  ca_file   = "{{ nomad_consul.ca_file }}"
+  cert_file = "{{ nomad_consul.cert_file }}"
+  key_file  = "{{ nomad_consul.key_file }}"
+{% endif %}
+}  
