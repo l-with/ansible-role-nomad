@@ -27,7 +27,9 @@ nomad_bind_addr:  "{{ ansible_default_ipv4.address }}"
 nomad_addresses:
 _nomad_addresses_defaults:
   http: "127.0.0.1"
-#nomad_advertise
+nomad_advertise:
+_nomad_advertise_defaults:
+  http: "{{ ansible_default_ipv4.address }}"
 nomad_ports:
 _nomad_ports_defaults:
   http: 4646
